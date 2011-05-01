@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title></title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                font-size: 12px;
+            }
+            span {
+                color: red;
+            }
+            pre {
+                color: green;
+            }
+        </style>
+        <!-- Auto login, true that's bad -->
+        <script type="text/javascript" src="/login/"></script>
+
+        <!-- Base script -->
+        <script type="text/javascript" src="/EcdcClient.js"></script>
+        <script type="text/javascript" src="/main.js"></script>
+    </head>
+    <body>
+        <pre id="status"><span>You are <b>not</b> calculating square roots!</span></pre>
+        <script>
+            if (client.isActive()) {
+                document.getElementById('status').innerHTML = 'You are calculating square roots!';
+            }
+        </script>
+    </body>
+</html>
