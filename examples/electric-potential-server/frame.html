@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title></title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                font-size: 12px;
+                font-family: Arial;
+            }
+        </style>
+        <!-- Auto login, true that's bad -->
+        <script type="text/javascript" src="/login/"></script>
+
+        <!-- Base script -->
+        <script type="text/javascript" src="/EcdcClient.js"></script>
+        <script type="text/javascript" src="/main.js"></script>
+    </head>
+    <body>
+        <div id="status">You are <b>not</b> calculating electric potential</div>
+        <script>
+            if (client.isActive()) {
+                document.getElementById('status').innerHTML = 'You are calculating electric potential. <a href="/info.html">Details</a>';
+            }
+        </script>
+    </body>
+</html>
