@@ -17,8 +17,7 @@ EcdcWorker.prototype.calculate = function (id, data, callback) {
 };
 
 EcdcWorker.prototype.MAX_TASKS_BUFFER = 5;            // Accumulates 5 tasks then post all to server
-EcdcWorker.prototype.LOG_LEVEL = 0;                   // Log on/off
-EcdcWorker.prototype.URL = 'http://127.0.0.1/task/';  // REST path
+EcdcWorker.prototype.LOG_LEVEL = 1;                   // Log on/off
 
 // We will use async version
 var isSynchronous = false;
