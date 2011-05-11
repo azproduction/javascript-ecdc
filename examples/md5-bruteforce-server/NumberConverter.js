@@ -5,18 +5,18 @@
  */
 (function (exports) {
 
-    var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/*-\\?=`~!@#$%^&*()_{}[];:'\"|.,<> ";
-    var alphabetLength = alphabet.length;
-    var alphabetKeys = function () {
-        var result = {};
-        for (var i = 0; i < alphabetLength; i++) {
-            result[alphabet.charAt(i)] = i;
-        }
-        return result;
-    }();
+    var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/*-\\?=`~!@#$%^&*()_{}[];:'\"|.,<> ",
+        alphabetLength = alphabet.length,
+        alphabetKeys = function () {
+            var result = {};
+            for (var i = 0; i < alphabetLength; i++) {
+                result[alphabet.charAt(i)] = i;
+            }
+            return result;
+        }();
 
     function fromNto10 (string, base) {
-        if (base > alphabetLength) {
+        if (!base || base > alphabetLength) {
             base = alphabetLength;
         }
         if (base < 2) {
@@ -31,7 +31,7 @@
     }
 
     function from10toN (number, base) {
-        if (base > alphabetLength) {
+        if (!base || base > alphabetLength) {
             base = alphabetLength;
         }
         if (base < 2) {
