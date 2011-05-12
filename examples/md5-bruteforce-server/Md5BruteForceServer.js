@@ -18,7 +18,7 @@ var PASSWORD = "P.w~Pew0",
     TASK_STEP = 400000, // passwords per task
     TASKS_COUNT = Math.ceil(MAX_PASSWORDS_COUNT / TASK_STEP),
 
-    SQLITE3_PATH = ':memory:',
+    SQLITE3_PATH = __dirname + '/database/ecdc.sqlite3',
     SQLITE3_TABLE = "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, expires INTEGER, done SMALLINT)"
     ;
 
