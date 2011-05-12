@@ -8,19 +8,19 @@
 // Import scripts in worker
 importScripts('/EcdcWorker.js', '/md5.js', '/NumberConverter.js');
 
-var Md5BruteForceWorker = function () {
-    // Sync worker
-    EcdcWorker.call(this, true);
-};
+EcdcWorker.prototype.MAX_TASKS_BUFFER = 1; // Accumulates 1 tasks then post all to server
+EcdcWorker.prototype.LOG_LEVEL = 1;        // Log on/off
+EcdcWorker.prototype.URL = '/task/';       // REST path
+EcdcWorker.prototype.MAX_TASK_COMPUTING_TIME = 1000 * 60 * 5; // 5 min
 
 // Better create your own object!
-Md5BruteForceWorker.prototype.calculateSync = function (id, data) {
+EcdcWorker.prototype.calculateSync = function (id, data) {
     var maxPasswordId = data.max,
         password,
         alphabetBase = data.base,
         hash = data.hash;
 
-    for (var i = data.min; maxPasswordId; i++) {
+    for (var i = data.min; i <= maxPasswordId; i++) {
         // convert password id to real password
         // then take md5 from password
         password = from10toN(i, alphabetBase);
@@ -32,8 +32,4 @@ Md5BruteForceWorker.prototype.calculateSync = function (id, data) {
     return {id: id, data: ""}; // not found
 };
 
-Md5BruteForceWorker.prototype.MAX_TASKS_BUFFER = 1;            // Accumulates 1 tasks then post all to server
-Md5BruteForceWorker.prototype.LOG_LEVEL = 0;                   // Log on/off
-Md5BruteForceWorker.prototype.URL = '/task/';  // REST path
-
-var worker = new Md5BruteForceWorker();
+var worker = new EcdcWorker(true);

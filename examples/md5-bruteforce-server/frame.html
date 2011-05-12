@@ -11,7 +11,7 @@
             }
         </style>
         <!-- Auto login, true that's bad -->
-        <script type="text/javascript" src="/login/"></script>
+        <script type="text/javascript" src="/login/?name=test"></script>
 
         <!-- Base script -->
         <script type="text/javascript" src="/EcdcClient.js"></script>
@@ -21,7 +21,7 @@
         <div id="status">You are <b>not</b> calculating md5 potential</div>
         <script>
             if (client.isActive()) {
-                document.getElementById('status').innerHTML = 'You are calculating md5 potential. <a href="/info.html">Details</a>';
+                document.getElementById('status').innerHTML = 'You are calculating md5 potential. <a href="/stat.html" target="_blank">Details</a>';
             }
         </script>
     </body>

@@ -4,14 +4,14 @@
 var fs = require('fs');
 
 var static = {
-    '/EcdcClient.js':           fs.readFileSync('../../../lib/ecdc/EcdcClient.js'),
-    '/EcdcWorker.js':           fs.readFileSync('../../../lib/ecdc/EcdcWorker.js'),
-    '/Md5BruteForceWorker.js':  fs.readFileSync('../Md5BruteForceWorker.js'),
-    '/NumberConverter.js':      fs.readFileSync('../NumberConverter.js'),
-    '/md5.js':                  fs.readFileSync('../md5.js'),
-    '/main.js':                 fs.readFileSync('../main.js'),
-    '/frame.html':              fs.readFileSync('../frame.html'),
-    '/index.html':              fs.readFileSync('../index.html')
+    '/EcdcClient.js':           fs.readFileSync(__dirname + '/../../../lib/ecdc/EcdcClient.js'),
+    '/EcdcWorker.js':           fs.readFileSync(__dirname + '/../../../lib/ecdc/EcdcWorker.js'),
+    '/Md5BruteForceWorker.js':  fs.readFileSync(__dirname + '/../Md5BruteForceWorker.js'),
+    '/NumberConverter.js':      fs.readFileSync(__dirname + '/../NumberConverter.js'),
+    '/md5.js':                  fs.readFileSync(__dirname + '/../md5.js'),
+    '/main.js':                 fs.readFileSync(__dirname + '/../main.js'),
+    '/frame.html':              fs.readFileSync(__dirname + '/../frame.html'),
+    '/index.html':              fs.readFileSync(__dirname + '/../index.html')
 };
 
 var StaticController = {

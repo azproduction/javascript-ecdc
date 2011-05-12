@@ -6,7 +6,7 @@
  */
 var client = new EcdcClient({
     script: '/Md5BruteForceWorker.js', // Worker script
-    count: 2,                   // Workers count
+    count: 1,                   // Workers count
     autoStart: false            // Auto start?
 });
 
