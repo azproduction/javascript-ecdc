@@ -4,9 +4,19 @@
  * @author azproduction
  */
 (function (exports) {
-
+        /**
+         * @type String
+         */
     var alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/*-\\?=`~!@#$%^&*()_{}[];:'\"|.,<> ",
+        /**
+         * @type Number
+         */
         alphabetLength = alphabet.length,
+        /**
+         * Weight of symbols
+         *
+         * @type Object
+         */
         alphabetKeys = function () {
             var result = {};
             for (var i = 0; i < alphabetLength; i++) {
@@ -15,6 +25,12 @@
             return result;
         }();
 
+    /**
+     * Converts from N numeric system to 10
+     *
+     * @param {String} string N numeric system number eg ytwer%^& or 270f -  case sense!
+     * @param {Number} base system N - max length of alphabet
+     */
     function fromNto10 (string, base) {
         if (!base || base > alphabetLength) {
             base = alphabetLength;
@@ -30,6 +46,12 @@
         return result;
     }
 
+    /**
+     * Converts from 10 numeric system to N
+     *
+     * @param {Number} number 10 numeric system number
+     * @param {Number} base   system N - max length of alphabet
+     */
     function from10toN (number, base) {
         if (!base || base > alphabetLength) {
             base = alphabetLength;

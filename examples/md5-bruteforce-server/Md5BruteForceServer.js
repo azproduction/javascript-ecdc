@@ -9,7 +9,7 @@ var util = require('util'),
     nc = require('./NumberConverter'),
     sqlite3 = require('sqlite');
 
-var PASSWORD = "P.w~Pew0",
+var PASSWORD = "a_*" || "P.w~Pew0",
     PASSWORD_MD5_HASH = md5(PASSWORD),
     EXPIRES = 3 * 60 * 60 * 1000, // plus 3h
     PASSWORD_MAX_SYMBOLS = PASSWORD.length,
@@ -38,7 +38,7 @@ Md5BruteForceServer.prototype.createTasks = function (request, callback) {
         self = this;
 
     if (complete) {
-        callback('complete');
+        callback(self.STATE_COMPLETE);
         return;
     }
     // Check if some undone task is expires
@@ -52,7 +52,7 @@ Md5BruteForceServer.prototype.createTasks = function (request, callback) {
         // Not expires found - create, send
         if (!rows.length) {
             if (maxReached) {
-                callback('max reached');
+                callback(self.STATE_MAX_REACHED);
                 return;
             }
             // Create
@@ -67,7 +67,7 @@ Md5BruteForceServer.prototype.createTasks = function (request, callback) {
                     var row = rows[0];
                     // Send
                     if (row.id > TASKS_COUNT) {
-                        callback('max reached');
+                        callback(self.STATE_MAX_REACHED);
                         maxReached = true;
                         return;
                     }
@@ -125,7 +125,7 @@ Md5BruteForceServer.prototype.saveTasks = function (request, callback) {
             console.log("Found: " + tasks[i].data);
             // Don't send any
             complete = true;
-            callback('complete');
+            callback(this.STATE_COMPLETE);
         }
         this.db.execute("UPDATE tasks SET done = 1 WHERE id = ?", [tasks[i].id], function(){});
     }
