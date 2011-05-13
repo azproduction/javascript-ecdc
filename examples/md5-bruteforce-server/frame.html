@@ -9,20 +9,18 @@
                 font-size: 12px;
                 font-family: Arial;
             }
-        </style>
-        <!-- Auto login, true that's bad -->
-        <script type="text/javascript" src="/login/?name=test"></script>
 
+            #status {
+                background: #eee;
+                padding: 5px 5px 5px 10px;
+                border-radius: 10px;
+            }
+        </style>
         <!-- Base script -->
         <script type="text/javascript" src="/EcdcClient.js"></script>
-        <script type="text/javascript" src="/main.js"></script>
     </head>
     <body>
-        <div id="status">You are <b>not</b> calculating md5 potential</div>
-        <script>
-            if (client.isActive()) {
-                document.getElementById('status').innerHTML = 'You are calculating md5 potential. <a href="/stat.html" target="_blank">Details</a>';
-            }
-        </script>
+        <div id="status">You are <b>not</b> calculating md5. <a href="/stat.html" target="_blank">Details</a></div>
+        <script type="text/javascript" src="/main.js"></script>
     </body>
 </html>

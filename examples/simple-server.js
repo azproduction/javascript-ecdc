@@ -19,7 +19,7 @@ util.inherits(SimpleServer, EcdcServer);
 
 // Overrride isOwnUser
 SimpleServer.prototype.isOwnUser = function (request) {
-    return request.cookies.uid;
+    return !!request.cookies.ecdcuid;
 };
 
 // Create ECDC server

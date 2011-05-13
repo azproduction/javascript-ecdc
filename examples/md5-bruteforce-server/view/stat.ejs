@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title></title>
+        <style>
+            body {
+                font-family: Arial;
+                font-size: 12px;
+                padding-top: 100px;
+            }
+            p {
+                padding-left: 80px;
+                color: #777;
+            }
+            p b {
+              color: #333;
+            }
+            h1 {
+                font-size: 50px;
+                text-align: center;
+                text-shadow: 0px 0px 5px #777;
+            }
+            h1 img {
+                margin-bottom:-15px;
+            }
+            div {
+                width: 450px;
+                margin: 0 auto;
+                padding: 0px 20px 30px 20px;
+                border: solid 1px #ddd;
+                border-radius: 15px;
+                box-shadow: 0px 0px 5px #ddd;
+            }
+
+            span.done {
+                color: green;
+            }
+
+            span.progress {
+                color: blue;
+            }
+            sup {
+                background: #DDDDDD;
+                border-radius: 5px 5px 5px 5px;
+                font-size: 10px;
+                padding: 5px;
+                position: relative;
+                text-shadow: none;
+                top: -25px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <h1>Hello, <img src="http://www.gravatar.com/avatar/<%= ecdcuid %>?d=identicon"/><sup><a href="/logout/">logout</a></sup></h1>
+            <p><b>Server status</b>: <% if (complete) {%><span class="done">Job done!</span><% } else { %><span class="progress">In progress...</span><% }%></p>
+            <p><b>Total tasks send</b>: <%= send %> of <%= max_tasks %></p>
+            <p><b>Total tasks received</b>: <%= received %> calculated <%= calculated %> md5</p>
+            <p><b>Yours finished tasks</b>: <%= my %> (<%= my_percent %>% of total)</p>
+        </div>
+    </body>
+</html>

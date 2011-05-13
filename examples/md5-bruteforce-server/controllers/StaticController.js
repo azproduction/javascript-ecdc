@@ -11,6 +11,7 @@ var static = {
     '/md5.js':                  fs.readFileSync(__dirname + '/../md5.js'),
     '/main.js':                 fs.readFileSync(__dirname + '/../main.js'),
     '/frame.html':              fs.readFileSync(__dirname + '/../frame.html'),
+    '/login.html':              fs.readFileSync(__dirname + '/../login.html'),
     '/index.html':              fs.readFileSync(__dirname + '/../index.html')
 };
 
