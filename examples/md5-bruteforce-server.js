@@ -9,7 +9,7 @@ var server = new Md5BruteForceServer(function (err) {
         console.log('Error ' + err);
         return;
     }
-    server.httpServer.listen(80);
+    server.httpServer.listen(10046);
     console.log('Md5 JavaScript ECDC server is listen on 0.0.0.0:80');
     console.log('Browse http://127.0.0.1/index.html\n');
 });
