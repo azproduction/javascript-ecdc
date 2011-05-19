@@ -1,5 +1,8 @@
 /**
+ * @fileOverview md5 server
  *
+ * @author azproduction
+ * @licence Dual licensed under the MIT or GPL Version 2 licenses
  */
 
 var util = require('util'),
@@ -21,7 +24,7 @@ var PASSWORD = "P.w~Pew0", // Hardcoded password md5 and its options
 
     // Database config
     RESULT_FILE_PATH = __dirname + '/database/result.txt',
-    SQLITE3_PATH = ':memory:' || __dirname + '/database/ecdc.sqlite3',
+    SQLITE3_PATH = __dirname + '/database/ecdc.sqlite3',
     SQLITE3_TABLE = "CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, expires INTEGER, done SMALLINT, user CHARACTER(32))"
     ;
 

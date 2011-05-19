@@ -14,6 +14,18 @@ EcdcWorker.prototype.URL = '/task/';       // REST path
 EcdcWorker.prototype.MAX_TASK_COMPUTING_TIME = 1000 * 60 * 5; // 5 min
 
 // Better create your own object!
+/**
+ * Calculates MD5
+ *
+ * @param {Number} id         task id
+ * @param {Object} data       task data
+ * @param {Number} data.max   start of passwords range eg 1
+ * @param {Number} data.min   end of passwords range, eg 154778
+ * @param {Number} data.base  password base eg 96 10 15 etc
+ * @param {String} data.hash  password md5 hash
+ *
+ * @returns {Object} task result
+ */
 EcdcWorker.prototype.calculateSync = function (id, data) {
     var maxPasswordId = data.max,
         password,
