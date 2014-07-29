@@ -59,6 +59,8 @@ var ElectricPotentialWorker = function () {
     EcdcWorker.call(this, true);
 };
 
+ElectricPotentialWorker.prototype = Object.create(EcdcWorker.prototype);
+
 // Better create your own object!
 ElectricPotentialWorker.prototype.calculateSync = function (id, data) {
     var distance,
@@ -96,8 +98,7 @@ ElectricPotentialWorker.prototype.calculateSync = function (id, data) {
     return {id: id, data: result};
 };
 
-ElectricPotentialWorker.prototype.MAX_TASKS_BUFFER = 1;            // Accumulates 1 tasks then post all to server
-ElectricPotentialWorker.prototype.LOG_LEVEL = 0;                   // Log on/off
-ElectricPotentialWorker.prototype.URL = 'http://127.0.0.1/task/';  // REST path
+ElectricPotentialWorker.prototype.MAX_TASKS_BUFFER = 1; // Accumulates 1 tasks then post all to server
+ElectricPotentialWorker.prototype.LOG_LEVEL = 0;        // Log on/off
 
 var worker = new ElectricPotentialWorker();

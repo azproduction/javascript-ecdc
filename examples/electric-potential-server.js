@@ -2,11 +2,29 @@
  *
  */
 
-var ElectricPotentialServer = require('./electric-potential-server/ElectricPotentialServer').ElectricPotentialServer;
+var express = require('express'),
+    util = require('util'),
+    EcdcServer = require('..').EcdcServer;
 
+var ElectricPotentialServer = function () {
+    EcdcServer.call(this);
+};
+
+util.inherits(ElectricPotentialServer, EcdcServer);
 
 var server = new ElectricPotentialServer();
-server.httpServer.listen(80);
 
-console.log('Electric Potential JavaScript ECDC server is listen on 0.0.0.0:80');
-console.log('Browse http://127.0.0.1/index.html\n');
+// Serve statics
+server.httpServer.use(express.static(__dirname + '/electric-potential-server'));
+server.httpServer.use(express.static(__dirname + '/../lib/ecdc'));
+
+server.httpServer.listen(8080);
+
+console.log('Electric Potential JavaScript ECDC server is listening 0.0.0.0:8080');
+console.log('Browse http://127.0.0.1:8080/index.html\n');
+
+// Print status to console
+process.stdout.write('\r' + new Date() +  ' Sent ' + server.sendTasks + ', Rec. ' + server.receivedTasks);
+setInterval(function () {
+    process.stdout.write('\r' + new Date() +  ' Sent ' + server.sendTasks + ', Rec. ' + server.receivedTasks);
+}, 1000);

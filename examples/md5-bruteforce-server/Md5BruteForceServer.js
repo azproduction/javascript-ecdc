@@ -7,11 +7,10 @@
 
 var util = require('util'),
     fs = require('fs'),
-    EcdcServer = require('../../lib/ecdc/EcdcServer').EcdcServer,
-    StaticController = require('./controllers/StaticController').StaticController,
+    EcdcServer = require('../..').EcdcServer,
     md5 = require('./md5').md5,
     nc = require('./NumberConverter'),
-    sqlite3 = require('sqlite');
+    sqlite3 = require('sqlite3');
 
 var PASSWORD = "P.w~Pew0", // Hardcoded password md5 and its options
     PASSWORD_MD5_HASH = md5(PASSWORD),
@@ -39,7 +38,6 @@ try { // If file not exists
 
 var Md5BruteForceServer = function (callback) {
     EcdcServer.call(this);
-    StaticController.init(this.httpServer);
     this.httpServer.set('view engine', 'ejs');
     this.httpServer.set('view options', {
         layout: false
@@ -78,7 +76,7 @@ EcdcServer.prototype._setupRoutes = function (httpServer) {
 EcdcServer.prototype.postLoginAction = function (req, res) {
     this.createUserId(req, function (err, userId) {
         if (err !== null) {
-            res.send(err + '', 403);
+            res.status(403).send(err + '');
             return;
         }
 
@@ -104,7 +102,7 @@ Md5BruteForceServer.prototype.createTasks = function (request, callback) {
 
     var user = request.cookies.ecdcuid;
     // Check if some undone task is expires
-    this.db.execute('SELECT id FROM tasks WHERE expires > ? AND done = 0', [now], function(err, rows) {
+    this.db.all('SELECT id FROM tasks WHERE expires > ? AND done = 0', [now], function(err, rows) {
         if (err) {
             callback(err);
             return;
@@ -118,9 +116,9 @@ Md5BruteForceServer.prototype.createTasks = function (request, callback) {
                 return;
             }
             // Create
-            self.db.execute('INSERT INTO tasks VALUES (NULL, ?, 0, ?)', [expires, user], function (err) {
+            self.db.run('INSERT INTO tasks VALUES (NULL, ?, 0, ?)', [expires, user], function (err) {
                 // get last insert id
-                self.db.execute("SELECT last_insert_rowid() AS id", function (err, rows) {
+                self.db.all("SELECT last_insert_rowid() AS id", function (err, rows) {
                     if (err) {
                         callback(err);
                         return;
@@ -154,7 +152,7 @@ Md5BruteForceServer.prototype.createTasks = function (request, callback) {
         var row = rows[rowId];
 
         // Update db: set new expires and user
-        self.db.execute('UPDATE tasks SET expires = ?, user = ? WHERE id = ?', [expires, user, row.id], function (err) {
+        self.db.run('UPDATE tasks SET expires = ?, user = ? WHERE id = ?', [expires, user, row.id], function (err) {
             if (err) {
                 callback(err);
                 return;
@@ -192,7 +190,7 @@ Md5BruteForceServer.prototype.saveTasks = function (request, callback) {
             fs.writeFileSync(RESULT_FILE_PATH, tasks[i].data, 'utf8');
             callback(this.STATE_COMPLETE);
         }
-        this.db.execute('UPDATE tasks SET done = 1, user = ? WHERE id = ?', [user, tasks[i].id], function(){});
+        this.db.run('UPDATE tasks SET done = 1, user = ? WHERE id = ?', [user, tasks[i].id], function(){});
     }
 
     if (!complete) {
@@ -203,7 +201,7 @@ Md5BruteForceServer.prototype.saveTasks = function (request, callback) {
 Md5BruteForceServer.prototype.getStatAction = function (req, res) {
     if (!this.isOwnUser(req)) {
         // Forbidden
-        res.send(403);
+        res.status(403).end();
         return;
     }
 
@@ -211,7 +209,7 @@ Md5BruteForceServer.prototype.getStatAction = function (req, res) {
 
     this.getStatistics(req, function(err, data) {
         if (err) {
-            res.send(500);
+            res.status(500).end();
             return;
         }
         switch (format) {
@@ -229,7 +227,7 @@ Md5BruteForceServer.prototype.getStatistics = function (request, callback) {
     var self = this,
         user = request.cookies.ecdcuid;
 
-    this.db.execute('SELECT COUNT(*) AS count FROM tasks WHERE user = ? AND done = 1', [user], function (err, rows) {
+    this.db.get('SELECT COUNT(*) AS count FROM tasks WHERE user = ? AND done = 1', [user], function (err, rows) {
         if (err) {
             callback(err);
             return;
@@ -237,11 +235,11 @@ Md5BruteForceServer.prototype.getStatistics = function (request, callback) {
         callback(null, {
             send: self.sendTasks,
             received: self.receivedTasks,
-            my: rows[0].count,
+            my: rows.count,
             complete: complete,
             max_tasks: TASKS_COUNT,
             calculated: self.receivedTasks * TASK_STEP,
-            my_percent: (rows[0].count * 100 / self.receivedTasks).toFixed(2)
+            my_percent: (rows.count * 100 / self.receivedTasks).toFixed(2)
         });
     });
 };
@@ -254,27 +252,25 @@ Md5BruteForceServer.prototype.isOwnUser = function (request) {
 Md5BruteForceServer.prototype._prepareDatabase = function (path, callback) {
     var self = this;
 
-    var db = new sqlite3.Database();
-    db.open(path, function () {
-        db.execute(SQLITE3_TABLE, function (err) {
+    var db = new sqlite3.Database(path);
+    db.exec(SQLITE3_TABLE, function (err) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        db.get('SELECT COUNT(*) AS count FROM tasks', function (err, rows) {
             if (err) {
                 callback(err);
                 return;
             }
-            db.execute('SELECT COUNT(*) AS count FROM tasks', function (err, rows) {
+            self.sendTasks = rows.count;
+            db.get('SELECT COUNT(*) AS count FROM tasks WHERE done = 1', function (err, rows) {
                 if (err) {
                     callback(err);
                     return;
                 }
-                self.sendTasks = rows[0].count;
-                db.execute('SELECT COUNT(*) AS count FROM tasks WHERE done = 1', function (err, rows) {
-                    if (err) {
-                        callback(err);
-                        return;
-                    }
-                    self.receivedTasks = rows[0].count;
-                    callback();
-                });
+                self.receivedTasks = rows.count;
+                callback();
             });
         });
     });

@@ -1,0 +1,30 @@
+{
+  "name": "javascript-ecdc",
+  "private": true,
+  "version": "0.1.0",
+  "description": "JavaScript Elastic Cloud for Distributed Computing - framework for creating browser-based distributed computing applications based on Node.js",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azproduction/javascript-ecdc.git"
+  },
+  "author": "Mikhail Davydov <i@azproduction.ru>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/azproduction/javascript-ecdc/issues"
+  },
+  "homepage": "https://github.com/azproduction/javascript-ecdc",
+  "dependencies": {
+    "body-parser": "^1.5.2",
+    "cookie-parser": "^1.3.2",
+    "errorhandler": "^1.1.1",
+    "express": "~4.7.2"
+  },
+  "devDependencies": {
+    "ejs": "^1.0.0",
+    "sqlite3": "^2.2.4"
+  }
+}

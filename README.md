@@ -1,11 +1,8 @@
-JavaScript ECDC
-===============
+# JavaScript ECDC
 
-Version 0.1
+## Architecture
 
-Architecture
-------------
-
+```
                      [Workers: EcdcWorker]
                      /                   \
         Tasks: XHR  /                     \  Messages: postMessage
@@ -13,8 +10,9 @@ Architecture
     [Server: EcdcServer] ------------ [Browser: EcdcClient] --- [User]
        |                                 |
     [Database: Any]                   [Storage: localStorage]
+```
 
-#### Basic logic
+## Basic logic
 
  1. User uses Browser browses Server's page
  2. Initialised EcdcClient client
@@ -32,25 +30,21 @@ Architecture
 
 and so on...
 
-Example - Md5 brute force server
-================================
+## Example - Md5 brute force server
 
- * Browse `examples/md5-bruteforce-server/`
- * Install node 4+, sqlite3-dev, express `npm install express`, node-sqlite `npm install sqlite`
- * Run `node md5-bruteforce-server.js
- * Browse `http://127.0.0.1/index.html`
+ * `npm install`
+ * Run `node example/md5-bruteforce-server`
+ * Browse `http://127.0.0.1:8080/index.html`
 
 Worker requires WebWorkers API, localStorage, XMLHttpRequest, JSON (all modern browsers, expect mobile)
 this behavior can be configured by overriding method `EcdcClient.prototype.isActive`
 
-Static setup
-------------
+### Static setup
 
 I use node.js for distribution of static files. You can use nginx, lighthttpd. `controllers/StaticController.js` caches
 all static files and returns them on request.
 
-Md5 brute force server routes
------------------------------
+### Md5 brute force server routes
 
  * `POST /login/` - Login
  * `GET /logout/` - Logout
@@ -58,8 +52,7 @@ Md5 brute force server routes
  * `POST /task/` - Saves task
  * `GET '/stat.:format?'` - Statistic in html (default) or json
 
-Server setup
-------------
+### Server setup
 
 You have to overwrite these EcdcServer methods (browse source for details):
 
@@ -79,8 +72,7 @@ Also you can overwrite default action methods or routes: `postTaskAction`, `getT
 
 See `Md5BruteForceServer.js` for details
 
-Client setup
-------------
+### Client setup
 
 Create EcdcClient instance
 
@@ -99,8 +91,7 @@ You can overwrite these EcdcClient events:
   * `EcdcClient.prototype.onLock` Client is locked by another client (two+ clients in same browser can't calculate in same time)
   * `EcdcClient.prototype.onUnlock` Client unlocked
 
-Worker setup
-------------
+### Worker setup
 
 Include via `importScripts` required files `/EcdcWorker.js`, `/md5.js` and `/NumberConverter.js` then setup worker options:
 
@@ -147,23 +138,10 @@ Then start worker in synchronous mode (pass true to EcdcWorker), default is asyn
 
     var worker = new EcdcWorker(true);
 
-Results
--------
+### Results
 
 Md5 brute force server uses sqlite3 database located by default in `database/ecdc.sqlite3` to store results of completed tasks, format:
 
     CREATE TABLE IF NOT EXISTS tasks (id INTEGER PRIMARY KEY, expires INTEGER, done SMALLINT, user CHARACTER(32))
 
 but you can use `:memory:` (browse `Md5BruteForceServer.js` for details). A plain file `database/result.txt` to store password (if found).
-
-Live MD5 Brute Force Server Example
------------------------------------
-
- * Live MD5 Brute Force Server: http://ecdc.nodester.com/
- * Server Statistics (Login required - any name or email): http://ecdc.nodester.com/stat.html
-
-
-Licence
--------
-
-Dual licensed under the MIT or GPL Version 2 licenses
